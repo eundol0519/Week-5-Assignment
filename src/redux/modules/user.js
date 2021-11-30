@@ -36,6 +36,7 @@ const loginAction = (user) => {
 const loginFB = (id, pwd) => {
   return function (dispatch, getState, { history }) {
     auth.setPersistence(firebase.auth.Auth.Persistence.SESSION).then((res) => {
+    // 세션에 auth를 등록한다.
       auth
         .signInWithEmailAndPassword(id, pwd) // 로그인 처리
         .then((user) => {
@@ -152,7 +153,6 @@ export default handleActions(
 const actionCreators = {
   logOut,
   getUser,
-  loginAction,
   signupFB,
   loginFB,
   loginCheckFB,

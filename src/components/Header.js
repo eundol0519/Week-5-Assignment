@@ -4,17 +4,18 @@ import React from "react";
 import { Grid, Button, Text } from "../elements";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { getCookie, deleteCookie } from "../shared/Cookie";
 
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 
-const Header = (props) => {
-  
-  const dispatch = useDispatch();
-  const is_login = useSelector((state) => state.user.is_login);
+import { history } from "../redux/configureStore";
+import { apiKey } from "../shared/firebase";
 
-  const history = useHistory();
+const Header = (props) => {
+  const dispatch = useDispatch();
+  const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
+
+  const is_login = sessionStorage.getItem(_session_key);
 
   if (is_login) {
     return (
@@ -29,7 +30,12 @@ const Header = (props) => {
           <Grid is_flex>
             <Button text="내정보"></Button>
             <Button text="알림"></Button>
-            <Button text="로그아웃" _onClick={()=>{dispatch(userActions.logOut({}))}}></Button>
+            <Button
+              text="로그아웃"
+              _onClick={() => {
+                dispatch(userActions.logoutFB());
+              }}
+            ></Button>
           </Grid>
         </Grid>
       </React.Fragment>
@@ -46,17 +52,12 @@ const Header = (props) => {
         </Grid>
 
         <Grid is_flex>
-          <Button text="회원가입" path="/join"></Button>
-          <Button text="로그인" path="/login"></Button>
+          <Button text="회원가입" _onClick={()=>{history.push('/join')}}></Button>
+          <Button text="로그인" _onClick={()=>{history.push('/login')}}></Button>
         </Grid>
       </Grid>
     </React.Fragment>
   );
 };
-
-const Btn = styled.button`
-  border: none;
-  background-color: white;
-`;
 
 export default Header;
