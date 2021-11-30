@@ -2,14 +2,12 @@
 
 import React from "react";
 import { Input, Button, Grid, Text } from "../elements";
-import Header from "../components/Header";
 
 const Join = (props) => {
 
   return (
     <React.Fragment>
       <Grid padding="16px">
-        <Header bold size="32px"></Header>
         <Text size="32px" bold>
           회원가입
         </Text>
@@ -34,7 +32,7 @@ const Join = (props) => {
           <Input type="password" label="비밀번호 확인" placeholder="비밀번호를 다시 입력 해주세요" _onChange={()=>{console.log("비밀번호 다시 작성")}}></Input>
         </Grid>
 
-        <Button shape='full' text="회원가입 하기"></Button>
+        <Button text="회원가입 하기"></Button>
       </Grid>
     </React.Fragment>
   );

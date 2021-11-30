@@ -7,7 +7,6 @@ import Header from '../components/Header';
 const PostList = (props)=>{
     return(
         <React.Fragment>
-            <Header></Header>
             <Post></Post>
         </React.Fragment>
     );
