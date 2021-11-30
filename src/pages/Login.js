@@ -7,12 +7,18 @@ import { actionCreators as userActions } from "../redux/modules/user";
 import { useDispatch } from "react-redux";
 
 const Login = (props) => {
+
   const dispatch = useDispatch();
+
   const [id, setId] = React.useState("");
   const [pwd, setPwd] = React.useState("");
 
   const login = () => {
-    dispatch(userActions.logIn({ user_name: "saebom" }));
+    if(id === '' || pwd === ''){
+      return;
+    }
+
+    dispatch(userActions.loginFB(id, pwd));
   };
 
   return (
