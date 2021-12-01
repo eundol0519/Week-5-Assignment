@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Text, Grid } from "../elements";
 
 const Input = (props) => {
-  const { label, placeholder, _onChange, _onKeyUp, type, multiLine } = props;
+  const { label, placeholder, _onChange, _onKeyUp, type, multiLine, value } = props;
 
   if (multiLine) {
     return (
@@ -15,6 +15,7 @@ const Input = (props) => {
           rows={10}
           placeholder={placeholder}
           onChange={_onChange}
+          value={value}
         ></ElTextarea>
       </Grid>
     );
@@ -42,6 +43,7 @@ Input.defaultProps = {
   type: "text",
   _onChange: () => {},
   _onKeyUp: () => {},
+  value : "",
 };
 
 const ElTextarea = styled.textarea`

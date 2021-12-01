@@ -1,7 +1,8 @@
 // Post.js
 
 import React from "react";
-import { Grid, Image, Text } from "../elements";
+import { Grid, Image, Text, Button } from "../elements";
+import { history } from "../redux/configureStore";
 
 const Post = (props) => {
   return (
@@ -9,21 +10,33 @@ const Post = (props) => {
       <Grid>
         <Grid is_flex padding="16px">
           <Grid is_flex width="auto">
-            <Image shape="circle" src={props.src}></Image>
+            <Image shape="circle" src={props.user_profile}></Image>
             <Text bold>{props.user_info.user_name}</Text>
           </Grid>
           <Grid is_flex width="auto">
             <Text>{props.insert_dt}</Text>
+            {props.is_me && (
+              <Button
+                width="auto"
+                padding="4px"
+                margin="4px"
+                _onClick={() => {
+                  history.push(`/postWrite/${props.id}`);
+                }}
+              >
+                수정
+              </Button>
+            )}
           </Grid>
         </Grid>
         <Grid padding="16px">
           <Text>{props.contents}</Text>
         </Grid>
         <Grid>
-            <Image shape="rectangle" src={props.src}></Image>
+          <Image shape="rectangle" src={props.image_url}></Image>
         </Grid>
         <Grid padding="16px">
-            <Text bold>댓글 {props.comment_cnt}개</Text>
+          <Text bold>댓글 {props.comment_cnt}개</Text>
         </Grid>
       </Grid>
     </React.Fragment>

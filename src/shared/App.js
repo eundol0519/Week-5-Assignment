@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import PostList from "../pages/PostList";
 import PostWrite from "../pages/PostWrite";
 import PostDetail from "../pages/PostDetail";
+import Notification from "../pages/Notification";
 
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../redux/configureStore";
@@ -41,10 +42,12 @@ function App() {
         <Header></Header>
         <ConnectedRouter history={history}>
           <Route path="/" exact component={PostList}></Route>
-          <Route path="/join" component={Join}></Route>
-          <Route path="/login" component={Login}></Route>
-          <Route path="/postWrite" component={PostWrite}></Route>
-          <Route path="/postDetail/:id" component={PostDetail}></Route>
+          <Route path="/join" exact component={Join}></Route>
+          <Route path="/login" exact component={Login}></Route>
+          <Route path="/postWrite" exact component={PostWrite}></Route>
+          <Route path="/postWrite/:id" exact component={PostWrite}></Route>     
+          <Route path="/postDetail/:id" exact component={PostDetail}></Route>     
+          <Route path="/noti" exact component={Notification}></Route>    
         </ConnectedRouter>
       </Grid>
       <Permit>
