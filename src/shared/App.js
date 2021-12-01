@@ -44,7 +44,7 @@ function App() {
           <Route path="/join" component={Join}></Route>
           <Route path="/login" component={Login}></Route>
           <Route path="/postWrite" component={PostWrite}></Route>
-          <Route path="/postDetail" component={PostDetail}></Route>
+          <Route path="/postDetail/:id" component={PostDetail}></Route>
         </ConnectedRouter>
       </Grid>
       <Permit>

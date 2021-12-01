@@ -1,37 +1,68 @@
-// Button.js
-
 import React from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
 
 const Button = (props) => {
-  const { text, _onClick, className } = props;
-  const history = useHistory();
+  const { text, _onClick, is_float, children, margin, width, className } =
+    props;
+
+  if (is_float) {
+    return (
+      <React.Fragment>
+        <FloatButton onClick={_onClick}>{text ? text : children}</FloatButton>
+      </React.Fragment>
+    );
+  }
+
+  const styles = {
+    margin: margin,
+    width: width,
+  };
 
   return (
     <React.Fragment>
-        <Btn className={className} onClick={_onClick}>{text}</Btn>
+      <ElButton className={className} {...styles} onClick={_onClick}>
+        {text ? text : children}
+      </ElButton>
     </React.Fragment>
   );
 };
 
 Button.defaultProps = {
-  shape: "notFull",
-  text: "텍스트를 작성 해주세요",
+  className: "",
+  text: false,
+  children: null,
   _onClick: () => {},
-  className : "",
+  is_float: false,
+  margin: false,
+  width: "100%",
 };
 
-const Btn = styled.button`
-  width: 100%;
-  height: 60px;
-  color: white;
-  border: none;
-  background-color: ${(props) => (props.className === 'unActiveBtn' ? 'gray' : 'black')};
-  margin-top: 10px;
+const ElButton = styled.button`
+  width: ${(props) => props.width};
+  background-color: ${(props) =>
+    props.className === "unActiveBtn" ? "gray" : "black"};
+  color: #ffffff;
   padding: 12px 0px;
   box-sizing: border-box;
+  border: none;
+  ${(props) => (props.margin ? `margin: ${props.margin};` : "")}
+`;
+
+const FloatButton = styled.button`
+  width: 50px;
+  height: 50px;
+  background-color: black;
+  color: #ffffff;
+  box-sizing: border-box;
+  font-size: 36px;
+  font-weight: 800;
+  position: fixed;
+  bottom: 50px;
+  right: 16px;
   text-align: center;
+  vertical-align: middle;
+  border: none;
+  border-radius: 50px;
 `;
 
 export default Button;
