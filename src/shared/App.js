@@ -12,18 +12,18 @@ import PostDetail from "../pages/PostDetail";
 
 import { ConnectedRouter } from "connected-react-router";
 import { history } from "../redux/configureStore";
-import Header from "../components/Header";
-import { Grid } from '../elements/index'
+import { Grid } from "../elements/index";
 
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 
 import { apiKey } from "./firebase";
+import { Button } from "../elements/index";
+
 import Permit from "./Permit";
-import {Button} from '../elements/index'
+import Header from "../components/Header";
 
 function App() {
-
   const dispatch = useDispatch();
 
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
@@ -37,18 +37,18 @@ function App() {
 
   return (
     <React.Fragment>
-        <Grid>
-          <Header></Header>
-          <ConnectedRouter history={history}>
-            <Route path="/" exact component={PostList}></Route>
-            <Route path="/join" component={Join}></Route>
-            <Route path="/login" component={Login}></Route>
-            <Route path="/postWrite" component={PostWrite}></Route>
-            <Route path="/postDetail" component={PostDetail}></Route>
-          </ConnectedRouter>
-        </Grid>
-        <Permit>
-          <Button is_float text="+"></Button>
+      <Grid>
+        <Header></Header>
+        <ConnectedRouter history={history}>
+          <Route path="/" exact component={PostList}></Route>
+          <Route path="/join" component={Join}></Route>
+          <Route path="/login" component={Login}></Route>
+          <Route path="/postWrite" component={PostWrite}></Route>
+          <Route path="/postDetail" component={PostDetail}></Route>
+        </ConnectedRouter>
+      </Grid>
+      <Permit>
+        <Button is_float text="+"></Button>
       </Permit>
     </React.Fragment>
   );

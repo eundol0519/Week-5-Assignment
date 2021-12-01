@@ -14,16 +14,20 @@ const Join = (props) => {
   const [pwd, setPwd] = React.useState('');
   const [pwd_check, setPwdCheck] = React.useState('');
   const [user_name, setUserName] = React.useState('');
+  const [active, setActive] = React.useState(false);
 
   const join = () => {
-    if(id === '' || pwd === '' || user_name === ''){
-      window.alert("입력 되지 않은 정보가 있습니다.")
-      return;
-    }else if(pwd !== pwd_check){
+
+    if(active===false){
       return;
     }
 
     dispatch(userActions.signupFB(id, pwd, user_name))
+  }
+
+  // 이메일, 패스워드 미기입 시 로그인 버튼 활성화/비활성화
+  const checkValid = () => {
+    id.includes("@", ".") && pwd === pwd_check && user_name ? setActive(true) : setActive(false);
   }
 
   return (
@@ -42,14 +46,17 @@ const Join = (props) => {
         </Grid> 
 
         <Grid padding="16px 0px">
-          <Input type="password" label="비밀번호" placeholder="비밀번호를 입력 해주세요" _onChange={(e)=>{setPwd(e.target.value)}}></Input>
+          <Input type="password" label="비밀번호" placeholder="비밀번호를 입력 해주세요" _onKeyUp={checkValid} _onChange={(e)=>{setPwd(e.target.value)}}></Input>
         </Grid>
 
         <Grid padding="16px 0px">
-          <Input type="password" label="비밀번호 확인" placeholder="비밀번호를 다시 입력 해주세요" _onChange={(e)=>{setPwdCheck(e.target.value)}}></Input>
+          <Input type="password" label="비밀번호 확인" placeholder="비밀번호를 다시 입력 해주세요" _onKeyUp={checkValid} _onChange={(e)=>{setPwdCheck(e.target.value)}}></Input>
         </Grid>
 
-        <Button text="회원가입 하기" _onClick={()=>{join();}}></Button>
+        <Button
+          className = {active ? 'activeBtn' : 'unActiveBtn'} 
+          text="회원가입 하기" 
+          _onClick={()=>{join();}}></Button>
       </Grid>
     </React.Fragment>
   );

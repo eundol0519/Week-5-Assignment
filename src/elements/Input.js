@@ -6,12 +6,12 @@ import { Text } from '../elements';
 
 const Input = (props)=>{
 
-    const { label, placeholder, _onChange, type } = props
+    const { label, placeholder, _onChange, _onKeyUp, type } = props
 
     return(
         <React.Fragment>
             <Text>{label}</Text>
-            <InputBox type={type} placeholder={placeholder} onChange={_onChange}></InputBox>
+            <InputBox type={type} placeholder={placeholder} onChange={_onChange} onKeyUp={_onKeyUp}></InputBox>
         </React.Fragment>   
     );
 }
@@ -20,7 +20,8 @@ Input.defaultProps = {
     label : "텍스트",
     placeholder : "텍스트를 입력 해주세요",
     type : "text",
-    _onChange : () => {}
+    _onChange : () => {},
+    _onKeyUp : () => {},
 };
 
 const InputBox = styled.input`
