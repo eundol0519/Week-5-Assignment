@@ -2,6 +2,8 @@
 
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import 'firebase/compat/firestore'; // 파이어스토어의 데이터베이스 연동
+import 'firebase/compat/storage'; // 스토리지 서비스 연동
 
 const firebaseConfig = {
     apiKey: "AIzaSyBJt3j3tOxiEPsbf5amaCHqKdqVopjx--k",
@@ -17,5 +19,7 @@ firebase.initializeApp(firebaseConfig);
 
 const apiKey = firebaseConfig.apiKey;
 const auth = firebase.auth();
+const firestore = firebase.firestore();
+const storage = firebase.storage();
 
-export { auth, apiKey };
+export { auth, apiKey, firestore, storage };

@@ -2,8 +2,6 @@
 
 import React from "react";
 import { Grid, Button, Text } from "../elements";
-import styled from "styled-components";
-import { useHistory } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
@@ -13,18 +11,26 @@ import { apiKey } from "../shared/firebase";
 
 const Header = (props) => {
   const dispatch = useDispatch();
+
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
+  const is_login = useSelector((state) => state.user.is_login);
+  const is_session = sessionStorage.getItem(_session_key) ? true : false;
 
-  const is_login = sessionStorage.getItem(_session_key);
-
-  if (is_login) {
+  if (is_login && is_session) {
     return (
       <React.Fragment>
         <Grid is_flex padding="4px 16px">
           <Grid>
-            <Text margin="0" size="24px" bold>
+            <Button
+              _onClick={() => {
+                history.push("/");
+              }}
+            >
               로고
-            </Text>
+            </Button>
+            {/* <Text margin="0" size="24px" bold>
+              로고
+            </Text> */}
           </Grid>
 
           <Grid is_flex>
@@ -46,14 +52,31 @@ const Header = (props) => {
     <React.Fragment>
       <Grid is_flex padding="4px 16px">
         <Grid>
-          <Text margin="0" size="24px" bold>
+          <Button
+            _onClick={() => {
+              history.push("/");
+            }}
+          >
             로고
-          </Text>
+          </Button>
+          {/* <Text margin="0" size="24px" bold>
+            로고
+          </Text> */}
         </Grid>
 
         <Grid is_flex>
-          <Button text="회원가입" _onClick={()=>{history.push('/join')}}></Button>
-          <Button text="로그인" _onClick={()=>{history.push('/login')}}></Button>
+          <Button
+            text="회원가입"
+            _onClick={() => {
+              history.push("/join");
+            }}
+          ></Button>
+          <Button
+            text="로그인"
+            _onClick={() => {
+              history.push("/login");
+            }}
+          ></Button>
         </Grid>
       </Grid>
     </React.Fragment>
