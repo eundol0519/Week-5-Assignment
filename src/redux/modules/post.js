@@ -160,48 +160,41 @@ const addPostFB = (contents = "") => {
   };
 };
 
+// 게시물 불러오기
 const getPostFB = (start = null, size = 3) => {
   return function (dispatch, getState, { history }) {
-
+   
     let _paging = getState().post.paging;
 
-    if(_paging.start && !_paging.next) { // 다음 페이지가 없으면 돌아가
+    if (_paging.start && !_paging.next) { 
       return;
     }
 
-    dispatch(loading(true)); // 로딩 처리
+    dispatch(loading(true));
 
-    const postDB = firestore.collection("post"); // 참조
+    const postDB = firestore.collection("post"); 
 
-    // 쿼리 날려서 날짜순으로 불러오기
     let query = postDB.orderBy("insert_dt", "desc");
-    // postDB : 어떤 collection에서 가져 올 지
-    // orderBy : 어떤 걸 기준으로 어떻게 정렬 할 지
-    // limit(갯수) : 최대 몇개를 가져올 지
 
     if (start) {
       query = query.startAt(start);
     }
 
     query
-      .limit(size + 1) // 다음 페이지가 있는 지 없는 지 판별하기 위해서 갯수를 +1 한다.
-      .get() // 가져올 때 사용
+      .limit(size + 1)
+      .get()
       .then((docs) => {
-        // 가져온 결과값을 docs로 받아온다.
         let post_list = [];
 
         let paging = {
-          // 페이징 처리
           start: docs.docs[0],
           next:
             docs.docs.length === size + 1
               ? docs.docs[docs.docs.length - 1]
               : null,
-          // 다음 게시물이 있으면 next에 다음 게시물 정보를 넣고, 없으면 null을 넣는다.
           size: size,
         };
 
-        // redux에 넣기 전에 가져온 데이터와 redux의 initialState의 형식을 맞춰준다.
         docs.forEach((doc) => {
           let _post = doc.data();
 
@@ -222,9 +215,8 @@ const getPostFB = (start = null, size = 3) => {
           post_list.push(post);
         });
 
-        post_list.pop(); // docs는 게시물 4개를 불러오기 때문에 마지막 게시물은 삭제한다.
+        post_list.pop();
 
-        // 데이터를 redux에 넣는다.
         dispatch(setPost(post_list, paging));
       });
   };

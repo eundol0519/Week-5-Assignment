@@ -11,7 +11,6 @@ import { apiKey } from "../shared/firebase";
 
 const Header = (props) => {
   const dispatch = useDispatch();
-
   const _session_key = `firebase:authUser:${apiKey}:[DEFAULT]`;
   const is_login = useSelector((state) => state.user.is_login);
   const is_session = sessionStorage.getItem(_session_key) ? true : false;
@@ -20,17 +19,12 @@ const Header = (props) => {
     return (
       <React.Fragment>
         <Grid is_flex padding="4px 16px">
-          <Grid>
-            <Button
-              _onClick={() => {
-                history.push("/");
-              }}
-            >
-              로고
-            </Button>
-            {/* <Text margin="0" size="24px" bold>
-              로고
-            </Text> */}
+          <Grid
+            _onClick={() => {
+              history.push("/");
+            }}
+          >
+            <Text margin="0px" size="24px" bold>로고</Text>
           </Grid>
 
           <Grid is_flex>
@@ -56,17 +50,12 @@ const Header = (props) => {
   return (
     <React.Fragment>
       <Grid is_flex padding="4px 16px">
-        <Grid>
-          <Button
-            _onClick={() => {
-              history.push("/");
-            }}
-          >
-            로고
-          </Button>
-          {/* <Text margin="0" size="24px" bold>
-            로고
-          </Text> */}
+        <Grid
+          _onClick={() => {
+            history.push("/");
+          }}
+        >
+          <Text margin="0px" size="24px" bold>로고</Text>
         </Grid>
 
         <Grid is_flex>
