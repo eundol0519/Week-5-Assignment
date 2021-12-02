@@ -10,10 +10,6 @@ const Notification = (props) => {
       { user_name: "mean0", post_id: "post4" },
     ];
 
-    React.useEffect = ()=>{
-        console.log("왜 안돼")
-    }
-
     return (
       <React.Fragment>
         <Grid padding="16px" bg="#EFF6FF">

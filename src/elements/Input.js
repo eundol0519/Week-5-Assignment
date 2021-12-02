@@ -16,6 +16,7 @@ const Input = (props) => {
           placeholder={placeholder}
           onChange={_onChange}
           value={value}
+          onKeyUp={_onKeyUp}
         ></ElTextarea>
       </Grid>
     );

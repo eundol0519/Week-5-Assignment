@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as imageActions } from "../redux/modules/image";
 
 const Upload = (props) => {
+  
   const fileInput = React.useRef();
   const dispatch = useDispatch();
 
@@ -30,7 +31,6 @@ const Upload = (props) => {
 
   const uploadFB = () => {
     // 실제로 이미지를 가지고 storage에 업로드 해주는 역할
-
     let image = fileInput.current.files[0]; // 이미지를 잡아온다.
     dispatch(imageActions.uploadImageFB(image));
   };

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Button = (props) => {
-  const { text, _onClick, is_float, children, margin, width, className, padding } = props;
+  const { text, _onClick, is_float, children, margin, width, className, padding, disabled } = props;
 
   if (is_float) {
     return (
@@ -20,7 +20,7 @@ const Button = (props) => {
 
   return (
     <React.Fragment>
-      <ElButton className={className} {...styles} onClick={_onClick}>
+      <ElButton className={className} {...styles} onClick={_onClick} disabled={disabled}>
         {text ? text : children}
       </ElButton>
     </React.Fragment>
@@ -36,6 +36,7 @@ Button.defaultProps = {
   margin: false,
   width: "100%",
   padding : "12px 0px",
+  disabled:false,
 };
 
 const ElButton = styled.button`

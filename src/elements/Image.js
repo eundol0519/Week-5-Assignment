@@ -4,25 +4,25 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = (props) => {
-  const { shape, src, size } = props;
+  const { shape, src, size, _onKeyUp } = props;
   const styles = {
     src: src,
     size: size,
   };
 
   if (shape === "circle") {
-    return <ImageCircle {...styles}></ImageCircle>;
+    return <ImageCircle onKeyUp={_onKeyUp} {...styles}></ImageCircle>;
   } else if (shape === "rectangle") {
     return (
       <AspectOutter>
-        <AspectInner {...styles}></AspectInner>
+        <AspectInner onKeyUp={_onKeyUp} {...styles}></AspectInner>
       </AspectOutter>
     );
   }
 
   return (
     <React.Fragment>
-      <ImageDefault {...styles}></ImageDefault>
+      <ImageDefault onKeyUp={_onKeyUp} {...styles}></ImageDefault>
     </React.Fragment>
   );
 };
@@ -31,6 +31,7 @@ Image.defaultProps = {
   shape: "circle",
   src: "https://i.ytimg.com/vi/Ct1Pp_4FEIY/maxresdefault.jpg",
   size: 36,
+  _onKeyUp : ()=>{},
 };
 
 const ImageCircle = styled.div`

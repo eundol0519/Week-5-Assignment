@@ -15,11 +15,11 @@ const PostWrite = (props) => {
   const post_id = props.match.params.id;
   const is_edit = post_id ? true : false;
 
-  const { history } = props;
-
+  const { history } = props;  
   let _post = is_edit ? post_list.find((p) => p.id === post_id) : null;
 
   const [contents, setContents] = React.useState(_post ? _post.contents : "");
+  const [active, setActive] = React.useState(true);
 
   React.useEffect(() => {
     if (is_edit && !_post) {
@@ -34,16 +34,20 @@ const PostWrite = (props) => {
     }
   }, []);
 
-  const changeContents = (e) => {
-    setContents(e.target.value);
-  };
-
+  // 글추가 하기
   const addPost = () => {
     dispatch(postActions.addPostFB(contents));
   };
 
+  // 글수정 하기
   const editPost = () => {
     dispatch(postActions.editPostFB(post_id, {contents: contents}));
+  }
+
+  // 이미지와 글을 입력 유무에 따라 버튼 비활성화/활성화
+  const checkValid = () => {
+    
+    contents && setActive(false);
   }
 
   if (!is_login) {
@@ -70,7 +74,7 @@ const PostWrite = (props) => {
         <Text margin="0px" size="36px" bold>
           {is_edit ? "게시글 수정" : "게시글 작성"}
         </Text>
-        <Upload />
+        <Upload/>
       </Grid>
 
       <Grid>
@@ -89,18 +93,19 @@ const PostWrite = (props) => {
       <Grid padding="16px">
         <Input
           value={contents}
-          _onChange={changeContents}
+          _onChange={(e)=>{setContents(e.target.value)}}
           label="게시글 내용"
           placeholder="게시글 작성"
           multiLine
+          _onKeyUp={checkValid}
         />
       </Grid>
 
       <Grid padding="16px">
         {is_edit ? (
-          <Button text="게시글 수정" _onClick={editPost}></Button>
+          <Button className = {active ? 'unActiveBtn' : 'activeBtn'} text="게시글 수정" _onClick={()=>{editPost();}} disabled={active}></Button>
         ) : (
-          <Button text="게시글 작성" _onClick={addPost}></Button>
+          <Button className = {active ? 'unActiveBtn' : 'activeBtn'} text="게시글 작성" _onClick={()=>{addPost();}} disabled={active}></Button>
         )}
       </Grid>
     </React.Fragment>

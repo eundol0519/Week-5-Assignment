@@ -62,7 +62,9 @@ const Join = (props) => {
         <Button
           className = {active ? 'activeBtn' : 'unActiveBtn'} 
           text="회원가입 하기" 
-          _onClick={()=>{join();}}></Button>
+          _onClick={()=>{join();}}
+          disabled={active}
+          ></Button>
       </Grid>
     </React.Fragment>
   );
