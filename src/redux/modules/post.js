@@ -1,7 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { firestore, storage } from "../../shared/firebase";
-
+import "moment";
 import moment from "moment";
 
 import { actionCreators as imageActions } from "./image";
@@ -9,7 +9,7 @@ import { actionCreators as imageActions } from "./image";
 const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
 const EDIT_POST = "EDIT_POST";
-const LOADING = "LOADING"; // 데이터를 가져올 때 로딩 중인 지 아닌 지 판별
+const LOADING = "LOADING";
 
 const setPost = createAction(SET_POST, (post_list, paging) => ({
   post_list,
@@ -24,13 +24,8 @@ const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
 const initialState = {
   list: [],
-  paging: {
-    // 페이징 정보를 담는다.
-    start: null, // 시작점
-    next: null, // 다음 게 있는 지 없는 지
-    size: 3, // 몇 개 가져 올건지
-  },
-  is_loading: false, // 로딩 중인지 아닌 지 판별
+  paging: { start: null, next: null, size: 3 },
+  is_loading: false,
 };
 
 const initialPost = {
@@ -166,47 +161,37 @@ const getPostFB = (start = null, size = 3) => {
     let _paging = getState().post.paging;
 
     if (_paging.start && !_paging.next) {
-      // 다음 페이지가 없으면 돌아가
       return;
     }
 
-    dispatch(loading(true)); // 로딩 처리
+    dispatch(loading(true));
+    const postDB = firestore.collection("post");
 
-    const postDB = firestore.collection("post"); // 참조
-
-    // 쿼리 날려서 날짜순으로 불러오기
     let query = postDB.orderBy("insert_dt", "desc");
-    // postDB : 어떤 collection에서 가져 올 지
-    // orderBy : 어떤 걸 기준으로 어떻게 정렬 할 지
-    // limit(갯수) : 최대 몇개를 가져올 지
 
     if (start) {
       query = query.startAt(start);
     }
 
     query
-      .limit(size + 1) // 다음 페이지가 있는 지 없는 지 판별하기 위해서 갯수를 +1 한다.
-      .get() // 가져올 때 사용
+      .limit(size + 1)
+      .get()
       .then((docs) => {
-        // 가져온 결과값을 docs로 받아온다.
         let post_list = [];
 
         let paging = {
-          // 페이징 처리
           start: docs.docs[0],
           next:
             docs.docs.length === size + 1
               ? docs.docs[docs.docs.length - 1]
               : null,
-          // 다음 게시물이 있으면 next에 다음 게시물 정보를 넣고, 없으면 null을 넣는다.
           size: size,
         };
 
-        // redux에 넣기 전에 가져온 데이터와 redux의 initialState의 형식을 맞춰준다.
         docs.forEach((doc) => {
           let _post = doc.data();
 
-          // 형식 맞춰주기
+          // ['commenct_cnt', 'contents', ..]
           let post = Object.keys(_post).reduce(
             (acc, cur) => {
               if (cur.indexOf("user_") !== -1) {
@@ -223,15 +208,15 @@ const getPostFB = (start = null, size = 3) => {
           post_list.push(post);
         });
 
-        post_list.pop(); // docs는 게시물 4개를 불러오기 때문에 마지막 게시물은 삭제한다.
+        post_list.pop();
 
-        // 데이터를 redux에 넣는다.
+        console.log(post_list);
+
         dispatch(setPost(post_list, paging));
       });
   };
 };
 
-// 게시물 하나만 가져오기
 const getOnePostFB = (id) => {
   return function (dispatch, getState, { history }) {
     const postDB = firestore.collection("post");
@@ -239,7 +224,9 @@ const getOnePostFB = (id) => {
       .doc(id)
       .get()
       .then((doc) => {
-        // 형식 맞춰주기
+        console.log(doc);
+        console.log(doc.data());
+
         let _post = doc.data();
         let post = Object.keys(_post).reduce(
           (acc, cur) => {
@@ -252,10 +239,9 @@ const getOnePostFB = (id) => {
             return { ...acc, [cur]: _post[cur] };
           },
           { id: doc.id, user_info: {} }
-        );  
-        
-        // 리덕스에 데이터 넣기
-        dispatch(setPost([post]))
+        );
+
+        dispatch(setPost([post]));
       });
   };
 };
@@ -266,21 +252,22 @@ export default handleActions(
       produce(state, (draft) => {
         draft.list.push(...action.payload.post_list);
 
-        // 중복 제거
+        // post_id가 같은 중복 항목을 제거합시다! :)
         draft.list = draft.list.reduce((acc, cur) => {
-          if(acc.findIndex(a => a.id === cur.id) === -1){
+          // findIndex로 누산값(cur)에 현재값이 이미 들어있나 확인해요!
+          // 있으면? 덮어쓰고, 없으면? 넣어주기!
+          if (acc.findIndex((a) => a.id === cur.id) === -1) {
             return [...acc, cur];
-            // 중복되는 값이 없으면 기존 배열에 데이터를 넣어서 새로운 배열을 만든다.
-          }else{
-            acc[acc.findIndex(a => a.id === cur.id)] = cur; // 최신값으로 덮어 씌운다.
+          } else {
+            acc[acc.findIndex((a) => a.id === cur.id)] = cur;
             return acc;
           }
         }, []);
 
-        if(action.payload.paging) {
+        // paging이 있을 때만 넣기
+        if (action.payload.paging) {
           draft.paging = action.payload.paging;
         }
-
         draft.is_loading = false;
       }),
 
@@ -295,7 +282,6 @@ export default handleActions(
         draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
       }),
     [LOADING]: (state, action) =>
-      // 로딩 처리
       produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading;
       }),

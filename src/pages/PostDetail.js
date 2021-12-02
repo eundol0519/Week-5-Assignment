@@ -4,7 +4,9 @@ import CommentList from "../components/CommentList";
 import CommentWrite from "../components/CommentWrite";
 
 import { useSelector, useDispatch } from "react-redux";
-import {actionCreators as postActions} from "../redux/modules/post";
+import { actionCreators as postActions } from "../redux/modules/post";
+
+import Permit from "../shared/Permit";
 
 const PostDetail = (props) => {
   const id = props.match.params.id; // 파라미터로 넘어온 params의 id를 불러온다.
@@ -24,7 +26,7 @@ const PostDetail = (props) => {
       return;
     }
 
-    dispatch(postActions.getOnePostFB(id))
+    dispatch(postActions.getOnePostFB(id));
   });
 
   return (
@@ -32,7 +34,9 @@ const PostDetail = (props) => {
       {post && (
         <Post {...post} is_me={post.user_info.user_id === user_info?.uid} />
       )}
-      <CommentWrite post_id={id} />
+      <Permit>
+        <CommentWrite post_id={id} />
+      </Permit>
       <CommentList post_id={id} />
     </React.Fragment>
   );
