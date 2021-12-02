@@ -16,8 +16,8 @@ const PostList = (props) => {
   const { history } = props;
 
   React.useEffect(() => {
-    if (post_list.length === 0) {
-      // 게시물 목록에 데이터가 없으면
+    if (post_list.length < 2) {
+    // 상세 페이지에서 뒤로가기 눌렀을 때 게시물 목록 불러오기
       dispatch(postActions.getPostFB()); // firebase에서 게시물 목록을 불러온다.
     }
   }, []);
@@ -45,7 +45,7 @@ const PostList = (props) => {
                     history.push(`postDetail/${p.id}`)
                   }}
                 >
-                  <Post key={p.id} {...p} is_me />;
+                  <Post key={p.id} {...p} is_me />
                 </Grid>
               );
             }
