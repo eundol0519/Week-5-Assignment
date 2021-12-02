@@ -19,7 +19,7 @@ const PostWrite = (props) => {
   let _post = is_edit ? post_list.find((p) => p.id === post_id) : null;
 
   const [contents, setContents] = React.useState(_post ? _post.contents : "");
-  const [active, setActive] = React.useState(true);
+  const [active, setActive] = React.useState(false);
 
   React.useEffect(() => {
     if (is_edit && !_post) {
@@ -47,7 +47,7 @@ const PostWrite = (props) => {
   // 이미지와 글을 입력 유무에 따라 버튼 비활성화/활성화
   const checkValid = () => {
     
-    contents && setActive(false);
+    contents && setActive(true);
   }
 
   if (!is_login) {
@@ -103,9 +103,9 @@ const PostWrite = (props) => {
 
       <Grid padding="16px">
         {is_edit ? (
-          <Button className = {active ? 'unActiveBtn' : 'activeBtn'} text="게시글 수정" _onClick={()=>{editPost();}} disabled={active}></Button>
+          <Button className = {active ? 'activeBtn' : 'unActiveBtn'} text="게시글 수정" _onClick={()=>{editPost();}} disabled={active}></Button>
         ) : (
-          <Button className = {active ? 'unActiveBtn' : 'activeBtn'} text="게시글 작성" _onClick={()=>{addPost();}} disabled={active}></Button>
+          <Button className = {active ? 'activeBtn' : 'unActiveBtn'} text="게시글 작성" _onClick={()=>{addPost();}} disabled={active}></Button>
         )}
       </Grid>
     </React.Fragment>
