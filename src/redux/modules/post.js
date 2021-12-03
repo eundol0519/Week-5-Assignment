@@ -210,8 +210,6 @@ const getPostFB = (start = null, size = 3) => {
 
         post_list.pop();
 
-        console.log(post_list);
-
         dispatch(setPost(post_list, paging));
       });
   };

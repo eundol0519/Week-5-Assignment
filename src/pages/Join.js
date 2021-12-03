@@ -33,6 +33,7 @@ const Join = (props) => {
 
   // 이메일, 패스워드 미기입 시 로그인 버튼 활성화/비활성화
   const checkValid = () => {
+    console.log("되나");
     id.includes("@", ".") && pwd === pwd_check && user_name && pwd.length >= 6 ? setActive(true) : setActive(false);
   }
 
@@ -52,7 +53,7 @@ const Join = (props) => {
         </Grid> 
 
         <Grid padding="16px 0px">
-          <Input type="password" label="비밀번호" placeholder="비밀번호를 입력 해주세요" _onKeyUp={checkValid} _onChange={(e)=>{setPwd(e.target.value)}}></Input>
+          <Input type="password" label="비밀번호" placeholder="비밀번호를 입력 해주세요" _onChange={(e)=>{setPwd(e.target.value)}}></Input>
         </Grid>
 
         <Grid padding="16px 0px">

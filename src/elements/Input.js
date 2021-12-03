@@ -8,6 +8,7 @@ const Input = (props) => {
     label,
     placeholder,
     _onChange,
+    _onKeyUp,
     type,
     multiLine,
     value,
@@ -46,7 +47,7 @@ const Input = (props) => {
             }}
           />
         ) : (
-          <ElInput type={type} placeholder={placeholder} onChange={_onChange} />
+          <ElInput type={type} placeholder={placeholder} onChange={_onChange} onKeyUp={_onKeyUp}/>
         )}
       </Grid>
     </React.Fragment>
