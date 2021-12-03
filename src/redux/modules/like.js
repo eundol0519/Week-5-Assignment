@@ -40,7 +40,7 @@ const addLikeFB = (post_id = null, like_cnt, like_list) => {
       .update({ like_cnt: increment, like_list: [...like_list, user_id] })
       .then((docs) => {
         window.alert("좋아요를 누르셨습니다.");
-        history.push("/");
+        window.location.reload();
       });
   };
 };
@@ -62,7 +62,7 @@ const minusLikeFB = (post_id = null, like_cnt, like_list) => {
       .update({ like_cnt: increment, like_list: new_like_list })
       .then((docs) => {
         window.alert("좋아요를 취소하셨습니다.");
-        history.push("/");
+        window.location.reload();
       });
   };
 };
