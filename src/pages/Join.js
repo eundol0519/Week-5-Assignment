@@ -15,11 +15,11 @@ const Join = (props) => {
   const [pwd, setPwd] = React.useState('');
   const [pwd_check, setPwdCheck] = React.useState('');
   const [user_name, setUserName] = React.useState('');
-  const [active, setActive] = React.useState(false);
+  const [active, setActive] = React.useState(true);
 
   const join = () => {
 
-    if(active===false){
+    if(active===true){
       return;
     }
 
@@ -33,7 +33,7 @@ const Join = (props) => {
 
   // 이메일, 패스워드 미기입 시 로그인 버튼 활성화/비활성화
   const checkValid = () => {
-    id.includes("@", ".") && pwd === pwd_check && user_name && pwd.length >= 6 ? setActive(true) : setActive(false);
+    id.includes("@", ".") && pwd === pwd_check && user_name && pwd.length >= 6 ? setActive(false) : setActive(true);
   }
 
   return (
@@ -60,9 +60,9 @@ const Join = (props) => {
         </Grid>
 
         <Button
-          className = {active ? 'activeBtn' : 'unActiveBtn'} 
+          className = {!active ? 'activeBtn' : 'unActiveBtn'} 
           text="회원가입 하기" 
-          _onClick={()=>{join();}}
+          _onClick={join}
           disabled={active}
           ></Button>
       </Grid>

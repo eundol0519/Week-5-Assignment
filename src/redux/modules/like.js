@@ -3,8 +3,6 @@ import { produce } from "immer";
 import { firestore } from "../../shared/firebase";
 import firebase from "firebase/compat/app";
 
-import { actionCreators as postActions } from "./post";
-
 // 액션 타입
 const MINUS_LIKE = "MINUS_LIKE";
 const ADD_LIKE = "ADD_LIKE";
