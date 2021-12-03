@@ -17,7 +17,7 @@ const PostList = (props) => {
 
   React.useEffect(() => {
     if (post_list.length < 2) {
-    // 상세 페이지에서 뒤로가기 눌렀을 때 게시물 목록 불러오기
+      // 상세 페이지에서 뒤로가기 눌렀을 때 게시물 목록 불러오기
       dispatch(postActions.getPostFB()); // firebase에서 게시물 목록을 불러온다.
     }
   }, []);
@@ -37,27 +37,13 @@ const PostList = (props) => {
           {post_list.map((p, idx) => {
             if (user_info && p.user_info.user_id === user_info.uid) {
               return (
-                <Grid
-                  bg="#ffffff"
-                  margin="8px 0px"
-                  key={p.id}
-                  _onClick={() => {
-                    history.push(`postDetail/${p.id}`)
-                  }}
-                >
+                <Grid bg="#ffffff" margin="8px 0px" key={p.id}>
                   <Post key={p.id} {...p} is_me />
                 </Grid>
               );
             }
             return (
-              <Grid
-                bg="#ffffff"
-                margin="8px 0px"
-                key={p.id}
-                _onClick={() => {
-                  history.push(`postDetail/${p.id}`)
-                }}
-              >
+              <Grid bg="#ffffff" margin="8px 0px" key={p.id}>
                 <Post key={p.id} {...p} />
               </Grid>
             );

@@ -33,7 +33,6 @@ const Join = (props) => {
 
   // 이메일, 패스워드 미기입 시 로그인 버튼 활성화/비활성화
   const checkValid = () => {
-    console.log("되나");
     id.includes("@", ".") && pwd === pwd_check && user_name && pwd.length >= 6 ? setActive(true) : setActive(false);
   }
 
