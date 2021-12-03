@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Permit from "../shared/Permit";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as likeActions } from "../redux/modules/like";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 const Post = (props) => {
   const user_id = useSelector((state) => state.user.user?.uid);
@@ -19,22 +20,21 @@ const Post = (props) => {
   const dispatch = useDispatch();
 
   // 좋아요 유무에 따라서 새로고침이 되어도 그대로 반영 되게 하는 코드
-  React.useEffect(()=>{
-    console.log(post)
+  React.useEffect(() => {
     const _post = post.filter((p) => {
       // 게시물 정보에서 좋아요를 누른 사람의 목록을 가져온다.
       return p.id === props.id;
     })[0].like_list;
-  
+
     if (_post) {
       _post.forEach((p) => {
         if (p === user_id) {
           setLike(true);
-          setColor('like');
+          setColor("like");
         }
       });
     }
-  })
+  });
 
   const likeClick = (props) => {
     const post_id = props.id; // 게시물 정보
@@ -67,6 +67,10 @@ const Post = (props) => {
     }
   };
 
+  const postDel = (post_id) => {
+    dispatch(postActions.deletePostFB(post_id))
+  }
+
   return (
     <React.Fragment>
       <Grid>
@@ -87,6 +91,18 @@ const Post = (props) => {
                 }}
               >
                 수정
+              </Button>
+            )}
+            {props.is_me && (
+              <Button
+                width="auto"
+                padding="4px"
+                margin="4px"
+                _onClick={() => {
+                  postDel(props.id)
+                }}
+              >
+                삭제
               </Button>
             )}
           </Grid>

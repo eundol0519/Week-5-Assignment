@@ -1,16 +1,20 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { firestore, storage } from "../../shared/firebase";
+import firebase from "firebase/compat/app";
 import "moment";
 import moment from "moment";
 
 import { actionCreators as imageActions } from "./image";
 
+// 액션 타입
 const SET_POST = "SET_POST";
 const ADD_POST = "ADD_POST";
 const EDIT_POST = "EDIT_POST";
+const DELETE_POST = "DELETE_POST";
 const LOADING = "LOADING";
 
+// 액션 생성 함수
 const setPost = createAction(SET_POST, (post_list, paging) => ({
   post_list,
   paging,
@@ -20,8 +24,10 @@ const editPost = createAction(EDIT_POST, (post_id, post) => ({
   post_id,
   post,
 }));
+const deletePost = createAction(DELETE_POST, (post_list) => ({ post_list }));
 const loading = createAction(LOADING, (is_loading) => ({ is_loading }));
 
+// 초기값
 const initialState = {
   list: [],
   paging: { start: null, next: null, size: 3 },
@@ -37,9 +43,41 @@ const initialPost = {
   image_url: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
   contents: "",
   comment_cnt: 0,
-  like_cnt : 0,
-  like_list : [],
+  like_cnt: 0,
+  like_list: [],
   insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
+};
+
+const deletePostFB = (post_id = null) => {
+  return function (dispatch, getState, { history }) {
+    if (!post_id) {
+      console.log("게시물 정보가 없어요!");
+      return;
+    }
+
+    const postDB = firestore.collection("post");
+
+    postDB
+      .doc(post_id)
+      .delete()
+      .then((doc) => {
+        console.log("게시물 삭제 성공");
+        postDB
+          .get()
+          .then((docs) => {
+            const post_list = [];
+
+            docs.forEach((doc) => {
+              post_list.push(doc.data());
+            });
+            dispatch(deletePost(post_list));
+            window.location.reload()
+          })
+          .catch((err) => {
+            console.log("게시물 삭제 실패", err);
+          });
+      });
+  };
 };
 
 const editPostFB = (post_id = null, post = {}) => {
@@ -84,7 +122,7 @@ const editPostFB = (post_id = null, post = {}) => {
               .update({ ...post, image_url: url })
               .then((doc) => {
                 dispatch(editPost(post_id, { ...post, image_url: url }));
-                history.replace("/");
+                history.replace('/')
               });
           })
           .catch((err) => {
@@ -127,8 +165,6 @@ const addPostFB = (contents = "") => {
       snapshot.ref
         .getDownloadURL()
         .then((url) => {
-          console.log(url);
-
           return url;
         })
         .then((url) => {
@@ -277,6 +313,11 @@ export default handleActions(
 
         draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
       }),
+    [DELETE_POST]: (state, action) => {
+      produce(state, (draft) => {
+        draft.list = action.payload.post_list;
+      });
+    },
     [LOADING]: (state, action) =>
       produce(state, (draft) => {
         draft.is_loading = action.payload.is_loading;
@@ -293,6 +334,7 @@ const actionCreators = {
   addPostFB,
   editPostFB,
   getOnePostFB,
+  deletePostFB,
 };
 
 export { actionCreators };
