@@ -21,8 +21,6 @@ const NotiBadge = (props) => {
     React.useEffect(()=>{
         const notiDB = realTime.ref(`noti/${user_id}`);
         notiDB.on('value', (snapshot) => {
-            console.log(snapshot.val());
-
             setIsRead(snapshot.val()?.read);
         })
 

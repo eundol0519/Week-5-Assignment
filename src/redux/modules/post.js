@@ -37,6 +37,8 @@ const initialPost = {
   image_url: "https://mean0images.s3.ap-northeast-2.amazonaws.com/4.jpeg",
   contents: "",
   comment_cnt: 0,
+  like_cnt : 0,
+  like_list : [],
   insert_dt: moment().format("YYYY-MM-DD hh:mm:ss"),
 };
 
@@ -51,8 +53,6 @@ const editPostFB = (post_id = null, post = {}) => {
 
     const _post_idx = getState().post.list.findIndex((p) => p.id === post_id);
     const _post = getState().post.list[_post_idx];
-
-    console.log(_post);
 
     const postDB = firestore.collection("post");
 
@@ -76,8 +76,6 @@ const editPostFB = (post_id = null, post = {}) => {
         snapshot.ref
           .getDownloadURL()
           .then((url) => {
-            console.log(url);
-
             return url;
           })
           .then((url) => {
