@@ -71,6 +71,7 @@ const deletePostFB = (post_id = null) => {
               post_list.push(doc.data());
             });
             dispatch(deletePost(post_list));
+            history.replace('/')
             window.location.reload()
           })
           .catch((err) => {
